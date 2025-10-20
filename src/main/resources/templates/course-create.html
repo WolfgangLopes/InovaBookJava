@@ -1,0 +1,47 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/"
+      layout:decorate="~{layout}">
+<head>
+    <title>Criar Curso</title>
+</head>
+<body class="d-flex flex-column h-100">
+<main class="flex-shrink-0">
+    <!-- Page Content-->
+    <section layout:fragment="content" class="py-5">
+        <div class="container">
+        <form role="form" method="post" th:action="@{/courses/new}" th:object="${course}" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="title">Titulo Do Curso</label>
+                    <input
+                            type="text"
+                            class="form-control"
+                            id="title"
+                            th:field="*{title}"
+                            placeholder="Titulo">
+                </div>
+                <div class="form-group col-md-6 mb-3">
+                    <label for="description">Descrição do curso</label>
+                    <input
+                            type="text"
+                            class="form-control"
+                            id="description"
+                            th:field="*{description}"
+                            placeholder="Descrição">
+                </div>
+            </div>
+            <div class="custom-file mb-3">
+                <input
+                        type="file" class="custom-file-input"
+                        id="validatedCustomFile" required
+                        name="thumbnailFile">
+                <label class="custom-file-label" for="validatedCustomFile">Selecionar imagem...</label>
+                <div class="invalid-feedback">Example invalid custom file feedback</div>
+            </div>
+            <button type="submit" class="btn btn-primary">Criar</button>
+        </form>
+        </div>
+    </section>
+</main>
+</body>
+</html>
