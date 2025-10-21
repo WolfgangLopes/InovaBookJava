@@ -14,9 +14,10 @@ layout:decorate="~{layout}">
                 <div th:each="course : ${courses}" class="col-lg-6">
                <div class="position-relative mb-5">
                         <img class="img-fluid rounded-3 mb-3" th:src="@{/image/thumbnail/{file}(file=${course.thumbnailPath})}" alt="Thumbnail" />
-                        <a th:text="${course.title}" class="h3 fw-bolder text-decoration-none link-dark stretched-link" href="#!">Project name</a>
+                        <a th:text="${course.title}" class="h3 fw-bolder text-decoration-none link-dark stretched-link" href="#!">Course name</a>
+                        <a th:text="${'(' + course.duration + ' Horas)'}" class="h3 fw-bolder text-decoration-none link-dark stretched-link" href="#!">Duração do curso</a>
                         </br>
-                        <a th:text="${course.description}" class="text-decoration-none link-dark stretched-link" href="#!">Project name</a>
+                        <a th:text="${course.description}" class="text-decoration-none link-dark stretched-link" href="#!">Course description</a>
                     </div>
                 </div>
             </div>

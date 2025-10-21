@@ -34,7 +34,7 @@ public class CourseController {
     }
 
     @GetMapping("/courses/new")
-    public String createCourse(Model model){
+    public String createCourseForm(Model model){
         Course course = new Course();
         model.addAttribute("course", course);
         return "course-create";
@@ -48,6 +48,10 @@ public class CourseController {
         return "redirect:/courses";
     }
 
-
-
+    @GetMapping("/courses/{id}/edit")
+    public String editCourseForm(@PathVariable("id") long id, Model model){
+        CourseDto course = courseService.findById(id);
+        model.addAttribute("course", course);
+        return "course-edit";
+    }
 }

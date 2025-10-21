@@ -34,11 +34,6 @@ public class CourseServiceImpl implements CourseService {
         return courses.stream().map(this::mapToCourseDto).collect(Collectors.toList());
     }
 
-    /*@Override
-    public Course saveCourse(Course course, MultipartFile file) {
-        return courseRepository.save(course);
-    }*/
-
     @Override
     public Course saveCourse(Course course, MultipartFile file) {
         try {
@@ -84,6 +79,12 @@ public class CourseServiceImpl implements CourseService {
         }
     }
 
+    @Override
+    public CourseDto findById(long id) {
+        Course course = courseRepository.findById(id).get();
+        return mapToCourseDto(course);
+    }
+
     private CourseDto mapToCourseDto (Course course) {
         return CourseDto.builder()
                 .id(course.getId())
@@ -95,6 +96,7 @@ public class CourseServiceImpl implements CourseService {
                 .thumbnailPath(course.getThumbnailPath())
                 .published(course.isPublished())
                 .publishedAt(course.getPublishedAt())
+                .duration(course.getDuration())
                 .build();
     }
 }

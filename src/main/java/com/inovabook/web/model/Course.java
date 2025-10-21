@@ -36,6 +36,7 @@ public class Course {
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+    private Integer duration;
 
     //@ManyToOne
     //private User instructor;

@@ -16,6 +16,7 @@ public class CourseDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private String thumbnailPath;
+    private Integer duration;
 
     //private User instructor;
     private BigDecimal price;
