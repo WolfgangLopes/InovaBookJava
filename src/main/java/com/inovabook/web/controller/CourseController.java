@@ -40,17 +40,11 @@ public class CourseController {
         return "course-create";
     }
 
-    /*@PostMapping("/courses/new")
-    public String saveCourse(@ModelAttribute("course") Course course){
-        courseService.saveCourse(course);
-        return "redirect:/courses";
-    }*/
-
     @PostMapping("/courses/new")
     public String saveCourse(@ModelAttribute("course") Course course, @RequestParam("thumbnailFile")
     MultipartFile file, Model model) throws IOException {
         courseService.saveCourse(course, file);
-        model.addAttribute("messange", "Curso salvo com sucesso!");
+        model.addAttribute("message", "Curso salvo com sucesso!");
         return "redirect:/courses";
     }
 
