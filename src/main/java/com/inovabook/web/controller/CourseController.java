@@ -54,4 +54,12 @@ public class CourseController {
         model.addAttribute("course", course);
         return "course-edit";
     }
+
+    @PostMapping("/courses/{id}/edit")
+    public String updateCourse(@PathVariable("id") long id, @ModelAttribute("course") CourseDto course, @RequestParam("thumbnailFile")
+        MultipartFile file, Model model) throws IOException {
+        course.setId(id);
+        courseService.updateCourse(course, file);
+        return "redirect:/courses";
+    }
 }

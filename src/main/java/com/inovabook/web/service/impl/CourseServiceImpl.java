@@ -3,29 +3,23 @@ package com.inovabook.web.service.impl;
 import com.inovabook.web.model.Course;
 import com.inovabook.web.repository.CourseRepository;
 import com.inovabook.web.service.CourseService;
-
 import com.inovabook.web.dto.CourseDto;
+import com.inovabook.web.service.FileStorageService;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
 public class CourseServiceImpl implements CourseService {
 
-    private CourseRepository courseRepository;
+    private final CourseRepository courseRepository;
+    private final FileStorageService fileStorageService;
 
-    public CourseServiceImpl(CourseRepository courseRepository) {
+    public CourseServiceImpl(CourseRepository courseRepository, FileStorageService fileStorageService) {
         this.courseRepository = courseRepository;
+        this.fileStorageService = fileStorageService;
     }
 
     @Override
@@ -37,52 +31,62 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Course saveCourse(Course course, MultipartFile file) {
         try {
-            if (!file.isEmpty()) {
-
-                Path uploadPath = Paths.get("uploads/image/thumbnail");
-                if (!Files.exists(uploadPath)) {
-                    Files.createDirectories(uploadPath);
-                }
-
-                String originalFilename = StringUtils.cleanPath(
-                        Objects.requireNonNull(file.getOriginalFilename())
-                );
-
-                String filename = originalFilename;
-                Path filePath = uploadPath.resolve(filename);
-                int counter = 1;
-
-                while (Files.exists(filePath)) {
-                    int dotIndex = originalFilename.lastIndexOf(".");
-                    String base = (dotIndex > 0)
-                            ? originalFilename.substring(0, dotIndex)
-                            : originalFilename;
-                    String ext = (dotIndex > 0)
-                            ? originalFilename.substring(dotIndex)
-                            : "";
-                    filename = base + "(" + counter + ")" + ext;
-                    filePath = uploadPath.resolve(filename);
-                    counter++;
-                }
-
-                try (InputStream inputStream = file.getInputStream()) {
-                    Files.copy(inputStream, filePath);
-                }
-
+            if (file != null && !file.isEmpty()) {
+                String filename = fileStorageService.storeFile(file, "image/thumbnail");
                 course.setThumbnailPath(filename);
             }
-
             return courseRepository.save(course);
-
         } catch (IOException e) {
-            throw new RuntimeException("Failed to save course thumbnail: " + e.getMessage(), e);
+            throw new RuntimeException("Failed to store course thumbnail", e);
         }
     }
 
     @Override
     public CourseDto findById(long id) {
-        Course course = courseRepository.findById(id).get();
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Course not found with id: " + id));
         return mapToCourseDto(course);
+    }
+
+    @Override
+    public void updateCourse(CourseDto courseDto, MultipartFile file) {
+        Course existing = courseRepository.findById(courseDto.getId())
+                .orElseThrow(() -> new RuntimeException("Course not found with id: " + courseDto.getId()));
+
+        // ✅ Map the incoming DTO to a temporary Course object
+        Course updatedData = mapToCourse(courseDto);
+
+        // ✅ Apply only updatable fields
+        existing.setTitle(updatedData.getTitle());
+        existing.setDescription(updatedData.getDescription());
+        existing.setPrice(updatedData.getPrice());
+        existing.setDuration(updatedData.getDuration());
+        existing.setPublished(updatedData.isPublished());
+
+        try {
+            // ✅ Handle file upload
+            if (file != null && !file.isEmpty()) {
+                fileStorageService.deleteFile("image/thumbnail", existing.getThumbnailPath());
+                String filename = fileStorageService.storeFile(file, "image/thumbnail");
+                existing.setThumbnailPath(filename);
+            }
+
+            courseRepository.save(existing);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to update course thumbnail", e);
+        }
+    }
+
+    private Course mapToCourse(CourseDto course) {
+        return Course.builder()
+                .id(course.getId())
+                .title(course.getTitle())
+                .description(course.getDescription())
+                .price(course.getPrice())
+                .duration(course.getDuration())
+                .thumbnailPath(course.getThumbnailPath())
+                .published(course.isPublished())
+                .build();
     }
 
     private CourseDto mapToCourseDto (Course course) {

@@ -12,4 +12,6 @@ public interface CourseService {
     Course saveCourse(Course course, MultipartFile file);
 
     CourseDto findById(long id);
+
+    void updateCourse(CourseDto course, MultipartFile file);
 }
