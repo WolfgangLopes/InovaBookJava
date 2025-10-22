@@ -5,7 +5,7 @@ import java.io.IOException;
 
 public interface FileStorageService {
 
-    String storeFile(MultipartFile file, String subfolder) throws IOException;
+    String storeFile(MultipartFile file, String subfolder);
 
     boolean deleteFile(String subfolder, String filename);
 }

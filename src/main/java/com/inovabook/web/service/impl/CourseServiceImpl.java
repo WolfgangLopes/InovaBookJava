@@ -7,7 +7,7 @@ import com.inovabook.web.dto.CourseDto;
 import com.inovabook.web.service.FileStorageService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.IOException;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,16 +29,13 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Course saveCourse(Course course, MultipartFile file) {
-        try {
+    public Course saveCourse(CourseDto courseDto, MultipartFile file) {
+        Course course = mapToCourse(courseDto);
             if (file != null && !file.isEmpty()) {
                 String filename = fileStorageService.storeFile(file, "image/thumbnail");
-                course.setThumbnailPath(filename);
+                courseDto.setThumbnailPath(filename);
             }
             return courseRepository.save(course);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to store course thumbnail", e);
-        }
     }
 
     @Override
@@ -63,18 +60,13 @@ public class CourseServiceImpl implements CourseService {
         existing.setDuration(updatedData.getDuration());
         existing.setPublished(updatedData.isPublished());
 
-        try {
             // ✅ Handle file upload
             if (file != null && !file.isEmpty()) {
                 fileStorageService.deleteFile("image/thumbnail", existing.getThumbnailPath());
                 String filename = fileStorageService.storeFile(file, "image/thumbnail");
                 existing.setThumbnailPath(filename);
             }
-
             courseRepository.save(existing);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to update course thumbnail", e);
-        }
     }
 
     private Course mapToCourse(CourseDto course) {

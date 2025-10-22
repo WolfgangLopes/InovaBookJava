@@ -41,10 +41,15 @@ public class CourseController {
     }
 
     @PostMapping("/courses/new")
-    public String saveCourse(@ModelAttribute("course") Course course,
+    public String saveCourse(@Valid @ModelAttribute("course") CourseDto courseDto,
                              @RequestParam("thumbnailFile") MultipartFile file,
+                             BindingResult result,
                              Model model) {
-        courseService.saveCourse(course, file);
+        if (result.hasErrors()) {
+            model.addAttribute("course", courseDto);
+            return "course-create";
+        }
+        courseService.saveCourse(courseDto, file);
         model.addAttribute("message", "Curso salvo com sucesso!");
         return "redirect:/courses";
     }

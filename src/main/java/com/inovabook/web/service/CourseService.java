@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface CourseService {
     List<CourseDto> getAllCourses();
-    Course saveCourse(Course course, MultipartFile file);
+    Course saveCourse(CourseDto courseDto, MultipartFile file);
 
     CourseDto findById(long id);
 

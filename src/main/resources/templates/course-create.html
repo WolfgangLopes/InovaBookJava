@@ -19,6 +19,7 @@
                             id="title"
                             th:field="*{title}"
                             placeholder="Titulo">
+                    <p th:if="${#fields?.hasErrors('title')}" class="text-danger" th:errors="*{title}"></p>
                 </div>
                 <div class="form-group col-md-6 mb-3">
                     <label for="description">Descrição do curso</label>
@@ -28,6 +29,7 @@
                             id="description"
                             th:field="*{description}"
                             placeholder="Descrição">
+                    <p th:if="${#fields?.hasErrors('description')}" class="text-danger" th:errors="*{description}"></p>
                 </div>
                 <div class="form-group col-md-6 mb-3">
                     <label for="duration">Duração do curso</label>
@@ -37,6 +39,7 @@
                         id="duration"
                         th:field="*{duration}"
                         placeholder="Digite apenas o número de horas">
+                    <p th:if="${#fields?.hasErrors('duration')}" class="text-danger" th:errors="*{duration}"></p>
                 </div>
             </div>
             <div class="custom-file mb-3">

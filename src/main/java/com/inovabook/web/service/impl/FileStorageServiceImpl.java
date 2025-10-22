@@ -1,10 +1,10 @@
 package com.inovabook.web.service.impl;
 
+import com.inovabook.web.exception.FileStorageException;
 import com.inovabook.web.service.FileStorageService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.*;
@@ -16,30 +16,27 @@ public class FileStorageServiceImpl implements FileStorageService {
     private static final Path ROOT_UPLOAD_PATH = Paths.get("uploads");
 
     @Override
-    public String storeFile(MultipartFile file, String subfolder) throws IOException {
+    public String storeFile(MultipartFile file, String subfolder) {
         if (file == null || file.isEmpty()) {
             return null;
         }
-
-        // Build full folder path (e.g., uploads/image/thumbnail)
+        try {
         Path uploadPath = ROOT_UPLOAD_PATH.resolve(subfolder);
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
         }
 
-        // Sanitize and ensure unique filename
         String originalFilename = StringUtils.cleanPath(
                 Objects.requireNonNull(file.getOriginalFilename())
         );
-
         String filename = resolveUniqueFilename(uploadPath, originalFilename);
 
-        // Copy file to destination
         try (InputStream inputStream = file.getInputStream()) {
             Files.copy(inputStream, uploadPath.resolve(filename));
         }
-
         return filename;
+    } catch (IOException e) {
+        throw new FileStorageException("Error storing file", e);}
     }
 
     @Override
@@ -74,7 +71,6 @@ public class FileStorageServiceImpl implements FileStorageService {
             filePath = uploadPath.resolve(filename);
             counter++;
         }
-
         return filename;
     }
 }
