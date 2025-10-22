@@ -7,7 +7,6 @@ import com.inovabook.web.dto.CourseDto;
 import com.inovabook.web.service.FileStorageService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import java.util.List;
 import java.util.stream.Collectors;
 
