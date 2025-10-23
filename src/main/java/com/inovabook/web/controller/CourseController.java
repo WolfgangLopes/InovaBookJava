@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
@@ -40,6 +41,14 @@ public class CourseController {
         return "course-create";
     }
 
+    @GetMapping("/courses/search")
+    public String searchCourse(Model model,
+                               @RequestParam(value="query") String query){
+        List<CourseDto> courses = courseService.searchCourse(query);
+        model.addAttribute("courses", courses);
+        return "course-list";
+    }
+
     @PostMapping("/courses/new")
     public String saveCourse(@Valid @ModelAttribute("course") CourseDto courseDto,
                              @RequestParam("thumbnailFile") MultipartFile file,
@@ -62,6 +71,14 @@ public class CourseController {
         return "course-edit";
     }
 
+    @GetMapping("/courses/{id}/")
+    public String courseView(@PathVariable("id") Long id,
+                                 Model model){
+        CourseDto courseDto = courseService.findById(id);
+        model.addAttribute("course", courseDto);
+        return "course-view";
+    }
+
     @PostMapping("/courses/{id}/edit")
     public String updateCourse(@PathVariable("id") Long id,
                                @Valid @ModelAttribute("course") CourseDto course,
@@ -74,6 +91,12 @@ public class CourseController {
         }
         course.setId(id);
         courseService.updateCourse(course, file);
+        return "redirect:/courses";
+    }
+
+    @GetMapping("/courses/{id}/delete")
+    public String deleteCourse(@PathVariable("id") Long id){
+        courseService.deleteCourse(id);
         return "redirect:/courses";
     }
 }

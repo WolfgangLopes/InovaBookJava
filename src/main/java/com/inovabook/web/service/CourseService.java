@@ -14,4 +14,8 @@ public interface CourseService {
     CourseDto findById(long id);
 
     void updateCourse(CourseDto course, MultipartFile file);
+
+    void deleteCourse(Long id);
+
+    List<CourseDto> searchCourse(String query);
 }

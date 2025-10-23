@@ -68,6 +68,17 @@ public class CourseServiceImpl implements CourseService {
             courseRepository.save(existing);
     }
 
+    @Override
+    public void deleteCourse(Long id) {
+        courseRepository.deleteById(id);
+    }
+
+    @Override
+    public List<CourseDto> searchCourse(String query) {
+        List<Course> courses = courseRepository.searchCourse(query);
+        return courses.stream().map(this::mapToCourseDto).collect(Collectors.toList());
+    }
+
     private Course mapToCourse(CourseDto course) {
         return Course.builder()
                 .id(course.getId())
@@ -94,4 +105,5 @@ public class CourseServiceImpl implements CourseService {
                 .duration(course.getDuration())
                 .build();
     }
+
 }

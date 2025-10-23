@@ -11,14 +11,21 @@ layout:decorate="~{layout}">
                 <p class="lead fw-normal text-muted mb-0">Matricule-se</p>
             </div>
            <div class="row gx-5">
-                <div th:each="course : ${courses}" class="col-lg-6 mb-2">
-               <div class="position-relative mb-3">
-                        <img class="img-fluid rounded-3 mb-3" th:src="@{/image/thumbnail/{file}(file=${course.thumbnailPath})}" alt="Thumbnail" />
-                        <a th:text="${course.title}" class="h3 fw-bolder text-decoration-none link-dark stretched-link" href="#!">Course name</a>
-                        <a th:text="${'(' + course.duration + ' Horas)'}" class="h3 fw-bolder text-decoration-none link-dark stretched-link" href="#!">Duração do curso</a>
-                        </br>
-                        <a th:text="${course.description}" class="text-decoration-none link-dark stretched-link" href="#!">Course description</a>
+               <div>
+                   <form th:action="@{/courses/search}" class="form-inline" my-2 my-lg-0 mb-3>
+                       <input name="query" class="form-control mr-sm-2 mb-5" type="search" placeholder="Pesquisar Cursos" aria-label="Search">
+                   </form>
                </div>
+                <div th:each="course : ${courses}" class="col-lg-6 mb-2">
+               <a class="position-relative mb-3 d-block text-decoration-none link-dark" th:href="@{/courses/{id}/(id=${course.id})}">
+                        <img class="img-fluid rounded-3 mb-3" th:src="@{/image/thumbnail/{file}(file=${course.thumbnailPath})}" alt="Thumbnail" />
+                        <h3 class="d-flex justify-content-lg-start align-items-center mb-2">
+                            <span th:text="${course.title}" class="h4 fw-bolder mb-0"></span>
+                            <small th:text="${'(' + course.duration + ' Horas)'}"
+                                   class="text-muted ms-2 fs-4"></small>
+                        </h3>
+                        <p th:text="${course.description}" class="stretched-link"></p>
+               </a>
                     <a class="btn btn-primary" th:href="@{/courses/{id}/edit(id=${course.id})}">Edit</a>
                 </div>
             </div>
