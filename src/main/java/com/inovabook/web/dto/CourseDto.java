@@ -17,8 +17,8 @@ public class CourseDto {
     private String title;
     @NotEmpty(message="{course.description.notnull}")
     private String description;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private LocalDateTime createdOn;
+    private LocalDateTime updatedOn;
     private String thumbnailPath;
     @Min(value=1, message="{course.duration.min}")
     private Integer duration;
@@ -26,5 +26,5 @@ public class CourseDto {
     //private User instructor;
     private BigDecimal price;
     private boolean published;
-    private LocalDateTime publishedAt;
+    private LocalDateTime publishedOn;
 }

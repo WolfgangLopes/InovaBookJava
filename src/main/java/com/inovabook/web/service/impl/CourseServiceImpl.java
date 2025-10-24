@@ -1,5 +1,7 @@
 package com.inovabook.web.service.impl;
 
+import com.inovabook.web.exception.CourseException;
+import com.inovabook.web.exception.CourseNotFoundException;
 import com.inovabook.web.model.Course;
 import com.inovabook.web.repository.CourseRepository;
 import com.inovabook.web.service.CourseService;
@@ -40,7 +42,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public CourseDto findById(long id) {
         Course course = courseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Course not found with id: " + id));
+                .orElseThrow(() -> new CourseNotFoundException(id));
         return mapToCourseDto(course);
     }
 
@@ -96,12 +98,12 @@ public class CourseServiceImpl implements CourseService {
                 .id(course.getId())
                 .title(course.getTitle())
                 .description(course.getDescription())
-                .createdAt(course.getCreatedAt())
-                .updatedAt(course.getUpdatedAt())
+                .createdOn(course.getCreatedOn())
+                .updatedOn(course.getUpdatedOn())
                 .price(course.getPrice())
                 .thumbnailPath(course.getThumbnailPath())
                 .published(course.isPublished())
-                .publishedAt(course.getPublishedAt())
+                .publishedOn(course.getPublishedOn())
                 .duration(course.getDuration())
                 .build();
     }

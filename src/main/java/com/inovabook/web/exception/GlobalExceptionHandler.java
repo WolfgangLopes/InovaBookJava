@@ -14,7 +14,7 @@ public class GlobalExceptionHandler {
     public String handleIOException(IOException ex,
                                     Model model) {
         model.addAttribute("fileError", "Error while processing file: " + ex.getMessage());
-        return "error-page"; // name of your Thymeleaf error template
+        return "error-page";
     }
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
@@ -39,5 +39,31 @@ public class GlobalExceptionHandler {
             model.addAttribute("fileError", ex.getMessage());
             return "redirect:" + (referer !=null ? referer: "/error");
         }
+
+    @ExceptionHandler(CourseException.class)
+        public String handleCourseException(CourseException ex,
+                                            Model model) {
+        String userMessage;
+        if (ex instanceof CourseNotFoundException notFound) {
+            userMessage = ex.getMessage();
+        } else {
+            userMessage = "Erro inesperado " + ex.getMessage();
+        }
+        model.addAttribute("errorMessage", userMessage);
+        return "error-page";
+        }
+
+    @ExceptionHandler(LessonException.class)
+    public String handleLessonException(LessonException ex,
+                                        Model model) {
+        String userMessage;
+        if (ex instanceof LessonNotFoundException notFound) {
+            userMessage = ex.getMessage();
+        } else {
+            userMessage = "Erro inesperado " + ex.getMessage();
+        }
+        model.addAttribute("errorMessage", userMessage);
+        return "error-page";
     }
+}
 

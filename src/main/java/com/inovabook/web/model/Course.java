@@ -32,15 +32,15 @@ public class Course {
     private String title;
     private String description;
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    private LocalDateTime createdOn;
     @UpdateTimestamp
-    private LocalDateTime updatedAt;
+    private LocalDateTime updatedOn;
     private Integer duration;
     private BigDecimal price;
     @Column(name = "thumbnail_path")
     private String thumbnailPath;
     private boolean published;
-    private LocalDateTime publishedAt;
+    private LocalDateTime publishedOn;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE)
     private Set<Lesson> lessons = new HashSet<>();

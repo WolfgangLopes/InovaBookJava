@@ -20,10 +20,12 @@
                     <div class="card mb-4">
                         <a href="#!"><img class="card-img-top" th:src="@{/image/thumbnail/{file}(file=${course.thumbnailPath})}" alt="..." /></a>
                         <div class="card-body">
-                            <div class="small text-muted" th:text="${course.createdAt}"></div>
+                            <div class="small text-muted" th:text="${course.createdOn}"></div>
                             <h2 class="card-title">Featured Post Title</h2>
                             <p class="card-text" th:text="${course.description}"></p>
                             <a class="btn btn-primary" th:href="@{/courses/{id}/delete(id=${course.id})}">Delete</a>
+                            <a class="btn btn-primary" th:href="@{/lesson/{id}/new(id=${course.id})}">Criar lição</a>
+
                         </div>
                     </div>
                     <!-- Nested row for non-featured blog posts-->

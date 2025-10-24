@@ -15,8 +15,8 @@ public class LessonDto {
     private Long id;
     private String title;
     private String videoPath;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private LocalDateTime createdOn;
+    private LocalDateTime updatedOn;
     private String author;
     private Integer duration;
 }

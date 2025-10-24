@@ -25,9 +25,9 @@ public class Lesson {
     private String title;
     private String videoPath;
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    private LocalDateTime createdOn;
     @UpdateTimestamp
-    private LocalDateTime updatedAt;
+    private LocalDateTime updatedOn;
     private String author;
     private Integer duration;
 
