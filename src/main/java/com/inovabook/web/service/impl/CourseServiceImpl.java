@@ -1,7 +1,7 @@
 package com.inovabook.web.service.impl;
 
-import com.inovabook.web.exception.CourseException;
 import com.inovabook.web.exception.CourseNotFoundException;
+import com.inovabook.web.mapper.CourseMapper;
 import com.inovabook.web.model.Course;
 import com.inovabook.web.repository.CourseRepository;
 import com.inovabook.web.service.CourseService;
@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.inovabook.web.mapper.CourseMapper.mapToCourse;
+import static com.inovabook.web.mapper.CourseMapper.mapToCourseDto;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -26,7 +29,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<CourseDto> getAllCourses() {
         List<Course> courses = courseRepository.findAll();
-        return courses.stream().map(this::mapToCourseDto).collect(Collectors.toList());
+        return courses.stream().map(CourseMapper::mapToCourseDto).collect(Collectors.toList());
     }
 
     @Override
@@ -78,34 +81,6 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<CourseDto> searchCourse(String query) {
         List<Course> courses = courseRepository.searchCourse(query);
-        return courses.stream().map(this::mapToCourseDto).collect(Collectors.toList());
+        return courses.stream().map(CourseMapper::mapToCourseDto).collect(Collectors.toList());
     }
-
-    private Course mapToCourse(CourseDto course) {
-        return Course.builder()
-                .id(course.getId())
-                .title(course.getTitle())
-                .description(course.getDescription())
-                .price(course.getPrice())
-                .duration(course.getDuration())
-                .thumbnailPath(course.getThumbnailPath())
-                .published(course.isPublished())
-                .build();
-    }
-
-    private CourseDto mapToCourseDto (Course course) {
-        return CourseDto.builder()
-                .id(course.getId())
-                .title(course.getTitle())
-                .description(course.getDescription())
-                .createdOn(course.getCreatedOn())
-                .updatedOn(course.getUpdatedOn())
-                .price(course.getPrice())
-                .thumbnailPath(course.getThumbnailPath())
-                .published(course.isPublished())
-                .publishedOn(course.getPublishedOn())
-                .duration(course.getDuration())
-                .build();
-    }
-
 }

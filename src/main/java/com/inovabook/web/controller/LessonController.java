@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 public class LessonController {
 
-    private LessonService lessonService;
+    private final LessonService lessonService;
 
     @Autowired
     public LessonController(LessonService lessonService) {
@@ -46,9 +46,16 @@ public class LessonController {
        }
         lessonService.createLesson(id, lessonDto, file);
         model.addAttribute("message", "Lição salva com sucesso!");
-        return "redirect:/courses/" + id;
+        return "redirect:/courses/" + id+"/";
     }
 
+    @GetMapping("/lesson/{id}")
+    public String viewLesson(@PathVariable("id") Long id,
+                             Model model) {
+        LessonDto lesson = lessonService.findById(id);
+        model.addAttribute("lesson", lesson);
+        return "lesson-view";
+    }
 }
 
 

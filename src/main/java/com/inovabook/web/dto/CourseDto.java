@@ -8,6 +8,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -27,4 +28,5 @@ public class CourseDto {
     private BigDecimal price;
     private boolean published;
     private LocalDateTime publishedOn;
+    private List<LessonDto> lessons;
 }

@@ -8,4 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 public interface LessonService {
     void createLesson(Long id, LessonDto lessonDto, MultipartFile file);
 
+    LessonDto findById(Long lessonId);
+
 }
