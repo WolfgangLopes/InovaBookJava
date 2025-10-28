@@ -7,6 +7,7 @@ import com.inovabook.web.repository.CourseRepository;
 import com.inovabook.web.service.CourseService;
 import com.inovabook.web.dto.CourseDto;
 import com.inovabook.web.service.FileStorageService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
@@ -50,12 +51,13 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    @Transactional
     public void updateCourse(CourseDto courseDto, MultipartFile file) {
         Course existing = courseRepository.findById(courseDto.getId())
-                .orElseThrow(() -> new RuntimeException("Course not found with id: " + courseDto.getId()));
+                .orElseThrow(() -> new CourseNotFoundException(courseDto.getId()));
 
         // ✅ Map the incoming DTO to a temporary Course object
-        Course updatedData = mapToCourse(courseDto);
+        Course updatedData = CourseMapper.mapToCourse(courseDto);
 
         // ✅ Apply only updatable fields
         existing.setTitle(updatedData.getTitle());
@@ -66,9 +68,8 @@ public class CourseServiceImpl implements CourseService {
 
             // ✅ Handle file upload
             if (file != null && !file.isEmpty()) {
-                fileStorageService.deleteFile("image/thumbnail", existing.getThumbnailPath());
-                String filename = fileStorageService.storeFile(file, "image/thumbnail");
-                existing.setThumbnailPath(filename);
+                String newFileName = fileStorageService.replaceFile("image/thumbnail", existing.getThumbnailPath(), file);
+                existing.setThumbnailPath(newFileName);
             }
             courseRepository.save(existing);
     }

@@ -53,6 +53,20 @@ public class FileStorageServiceImpl implements FileStorageService {
         }
     }
 
+    @Override
+    public String replaceFile(String subfolder, String oldFilename, MultipartFile newFile) {
+        if (newFile == null || newFile.isEmpty()) {
+            return oldFilename;
+        }
+        if (oldFilename != null && !oldFilename.isBlank()) {
+            // We deliberately ignore the boolean result; failure to delete is logged
+            // inside deleteFile() and does not abort the whole operation.
+            deleteFile(subfolder, oldFilename);
+        }
+        String filename = storeFile(newFile, subfolder);
+        return filename;
+    }
+
     private String resolveUniqueFilename(Path uploadPath, String originalFilename) {
         String filename = originalFilename;
         Path filePath = uploadPath.resolve(filename);
@@ -74,3 +88,4 @@ public class FileStorageServiceImpl implements FileStorageService {
         return filename;
     }
 }
+

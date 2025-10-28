@@ -85,6 +85,7 @@ public class CourseController {
                                @RequestParam("thumbnailFile") MultipartFile file,
                                Model model) {
         if(result.hasErrors()){
+            model.addAttribute("course", course);
             System.out.println("Erro de validação: " + result.getAllErrors());
             return "course-edit";
         }

@@ -7,4 +7,6 @@ public interface FileStorageService {
     String storeFile(MultipartFile file, String subfolder);
 
     boolean deleteFile(String subfolder, String filename);
+
+    String replaceFile(String subfolder, String oldFilename, MultipartFile newFile);
 }

@@ -1,8 +1,10 @@
 package com.inovabook.web.service.impl;
 
+import com.inovabook.web.dto.CourseDto;
 import com.inovabook.web.dto.LessonDto;
 import com.inovabook.web.exception.CourseNotFoundException;
 import com.inovabook.web.exception.LessonNotFoundException;
+import com.inovabook.web.mapper.CourseMapper;
 import com.inovabook.web.model.Course;
 import com.inovabook.web.model.Lesson;
 import com.inovabook.web.repository.CourseRepository;
@@ -45,6 +47,29 @@ public class LessonServiceImpl implements LessonService {
                 lesson.setCourse(course);
                 lessonRepository.save(lesson);
     }
+
+    @Override
+    @Transactional
+    public void updateLesson(LessonDto lessonDto, MultipartFile file) {
+        Lesson existing = lessonRepository.findById(lessonDto.getId())
+                .orElseThrow(() -> new LessonNotFoundException(lessonDto.getId()));
+
+        Lesson updatedData = LessonMapper.mapToLesson(lessonDto);
+
+        existing.setTitle(updatedData.getTitle());
+        existing.setAuthor(updatedData.getAuthor());
+        existing.setDuration(updatedData.getDuration());
+
+        if (file != null && !file.isEmpty()) {
+            String newFileName = fileStorageService.replaceFile("video/", existing.getVideoPath(), file);
+            existing.setVideoPath(newFileName);
+        }
+        lessonRepository.save(existing);
+    }
+
+
+    @Override
+    public void deleteLesson(Long id) {lessonRepository.deleteById(id);}
 
     @Override
     public LessonDto findById(Long id) {

@@ -39,8 +39,10 @@
                                     <div class="small text-muted">January 1, 2023</div>
                                     <h2 class="card-title h4" th:text="${lesson.title}"></h2>
                                     <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla.</p>
-                                    <a class="btn btn-primary" href="#!">Delete</a>
                                     </a>
+                                    <a class="btn btn-primary" th:href="@{/lesson/{id}/delete(id=${lesson.id})}">Delete</a>
+                                        <a clas="btn btn primary" th:href="@{/lesson/{id}/edit(id=${lesson.id})}">Edit</a>
+
                                 </div>
                             </div>
                     <!-- Pagination-->

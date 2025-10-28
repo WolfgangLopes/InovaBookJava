@@ -1,5 +1,6 @@
 package com.inovabook.web.controller;
 
+import com.inovabook.web.dto.CourseDto;
 import com.inovabook.web.dto.LessonDto;
 import com.inovabook.web.model.Lesson;
 import com.inovabook.web.service.LessonService;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,6 +57,36 @@ public class LessonController {
         LessonDto lesson = lessonService.findById(id);
         model.addAttribute("lesson", lesson);
         return "lesson-view";
+    }
+
+
+    @GetMapping("/lesson/{id}/edit")
+    public String editLesson(@PathVariable("id") Long id,
+                             Model model) {
+        LessonDto lesson = lessonService.findById(id);
+        model.addAttribute("lesson", lesson);
+        return "lesson-edit";
+    }
+    @PostMapping("/lesson/{id}/edit")
+    public String updateLesson(@PathVariable("id") Long id,
+                               @Valid @ModelAttribute("lesson") LessonDto lesson,
+                               BindingResult result,
+                               @RequestParam("videoFile") MultipartFile file,
+                               Model model) {
+        if(result.hasErrors()){
+            model.addAttribute("lesson, lesson");
+            System.out.println("Erro de validação: " + result.getAllErrors());
+            return "lesson-edit";
+        }
+        lesson.setId(id);
+        lessonService.updateLesson(lesson, file);
+        return "redirect:lesson" + id +"/";
+    }
+
+    @DeleteMapping("/lesson/{id}/delete")
+    public String deleteLesson(@PathVariable("id") long id){
+        lessonService.deleteLesson(id);
+        return "redirect:/courses/" + id +"/";
     }
 }
 
