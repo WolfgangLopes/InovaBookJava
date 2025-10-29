@@ -7,7 +7,7 @@ import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.stereotype.Component;
 
 
-@Component   // makes it a Spring bean (allows @Autowired injection)
+@Component
 public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, String> {
 
     private final UserRepository userRepository;
@@ -21,6 +21,7 @@ public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, St
         if (email == null || email.isBlank()) {
             return true; // @NotBlank will catch emptiness
         }
+        //Return if false (Does not exist)
         return !userRepository.existsByEmail(email);
     }
 }

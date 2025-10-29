@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/"
+      layout:decorate="~{layout}">
+<head>
+    <title>Register</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+
+<h1>Registrar</h1>
+
+<form th:action="@{/auth/register}" th:object="${registrationDto}" method="post">
+
+    <!-- Username -->
+    <div>
+        <label for="username">Username</label>
+        <input type="text" th:field="*{username}" id="username"/>
+        <div th:if="${#fields.hasErrors('username')}"
+             th:errors="*{username}" class="error"></div>
+    </div>
+
+    <!-- Email -->
+    <div>
+        <label for="email">E‑mail</label>
+        <input type="email" th:field="*{email}" id="email"/>
+        <div th:if="${#fields.hasErrors('email')}"
+             th:errors="*{email}" class="error"></div>
+    </div>
+    <div>
+        <label for="password">Password</label>
+        <input type="password" th:field="*{password}" id="password"/>
+        <div th:if="${#fields.hasErrors('password')}"
+             th:errors="*{password}" class="error"></div>
+    </div>
+    <div>
+        <label for="confirmPassword">Confirm password</label>
+        <input type="password" th:field="*{confirmPassword}" id="confirmPassword"/>
+        <div th:if="${#fields.hasErrors('confirmPassword')}"
+             th:errors="*{confirmPassword}" class="error"></div>
+    </div>
+    <button type="submit">Registrar</button>
+</form>
+</body>
+</html>

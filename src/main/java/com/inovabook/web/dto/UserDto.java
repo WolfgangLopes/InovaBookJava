@@ -1,13 +1,13 @@
 package com.inovabook.web.dto;
 
-import lombok.Builder;
-import lombok.Data;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
 
-@Data
-@Builder
-public class UserDto
-{
-    private Long id;
-    private String firstName;
-    private String lastName;
-}
+public record UserDto(
+        UUID id,
+        String email,
+        String fullName,
+        LocalDateTime createdOn,
+        List<String> roles
+) {}

@@ -4,11 +4,16 @@ import com.inovabook.web.exception.CourseNotFoundException;
 import com.inovabook.web.mapper.CourseMapper;
 import com.inovabook.web.model.Course;
 import com.inovabook.web.repository.CourseRepository;
+import com.inovabook.web.repository.EnrollmentRepository;
+import com.inovabook.web.repository.LessonProgressRepository;
+import com.inovabook.web.repository.LessonRepository;
 import com.inovabook.web.service.CourseService;
 import com.inovabook.web.dto.CourseDto;
 import com.inovabook.web.service.FileStorageService;
-import jakarta.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,14 +22,18 @@ import static com.inovabook.web.mapper.CourseMapper.mapToCourse;
 import static com.inovabook.web.mapper.CourseMapper.mapToCourseDto;
 
 @Service
+@Transactional
 public class CourseServiceImpl implements CourseService {
 
     private final CourseRepository courseRepository;
     private final FileStorageService fileStorageService;
+    private final LessonProgressRepository lessonProgressRepository;
 
-    public CourseServiceImpl(CourseRepository courseRepository, FileStorageService fileStorageService) {
+    @Autowired
+    public CourseServiceImpl(CourseRepository courseRepository, FileStorageService fileStorageService, EnrollmentRepository enrollmentRepository, LessonProgressRepository lessonProgressRepository, EntityManager entityManager, LessonRepository lessonRepository) {
         this.courseRepository = courseRepository;
         this.fileStorageService = fileStorageService;
+        this.lessonProgressRepository = lessonProgressRepository;
     }
 
     @Override
@@ -38,7 +47,7 @@ public class CourseServiceImpl implements CourseService {
         Course course = mapToCourse(courseDto);
             if (file != null && !file.isEmpty()) {
                 String filename = fileStorageService.storeFile(file, "image/thumbnail");
-                courseDto.setThumbnailPath(filename);
+                course.setThumbnailPath(filename);
             }
             return courseRepository.save(course);
     }

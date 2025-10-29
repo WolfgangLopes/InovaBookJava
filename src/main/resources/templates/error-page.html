@@ -7,8 +7,8 @@
 </head>
 <body>
 <div class="container mt-5">
-    <h1>Something went wrong</h1>
-    <p th:text="${fileError} ?: ${errorMessage} ?: 'Unknown error.'"></p>
+    <h1>Algo deu errado</h1>
+    <p th:text="${fileError != null} ? ${fileError} : (${errorMessage != null} ? ${errorMessage} : 'Erro desconhecido.')"></p>
 </div>
 </body>
 </html>

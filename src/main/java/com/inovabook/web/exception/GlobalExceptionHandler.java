@@ -1,6 +1,10 @@
 package com.inovabook.web.exception;
 
+import com.inovabook.web.dto.RegistrationDto;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.constraints.Email;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -12,6 +16,8 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
+@Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -37,33 +43,33 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(FileStorageException.class)
-        public String handleFileStorageException(FileStorageException ex,
-                                                 Model model,
-                                                 HttpServletRequest request) {
+    public String handleFileStorageException(FileStorageException ex,
+                                             Model model,
+                                             HttpServletRequest request) {
         String referer = request.getHeader("Referer");
-            model.addAttribute("fileError", ex.getMessage());
-            return "redirect:" + (referer !=null ? referer: "/error");
-        }
+        model.addAttribute("fileError", ex.getMessage());
+        return "redirect:" + (referer != null ? referer : "/error");
+    }
 
     @ExceptionHandler(CourseException.class)
-        public String handleCourseException(CourseException ex,
-                                            Model model) {
+    public String handleCourseException(CourseException ex,
+                                        Model model) {
         String userMessage;
         if (ex instanceof CourseNotFoundException notFound) {
-            userMessage = ex.getMessage();
+            userMessage = notFound.getMessage();
         } else {
             userMessage = "Erro inesperado " + ex.getMessage();
         }
         model.addAttribute("errorMessage", userMessage);
         return "error-page";
-        }
+    }
 
     @ExceptionHandler(LessonException.class)
     public String handleLessonException(LessonException ex,
                                         Model model) {
         String userMessage;
         if (ex instanceof LessonNotFoundException notFound) {
-            userMessage = ex.getMessage();
+            userMessage = notFound.getMessage();
         } else {
             userMessage = "Erro inesperado " + ex.getMessage();
         }
@@ -79,12 +85,48 @@ public class GlobalExceptionHandler {
         return "redirect:/lesson/{id}/new/";
     }
 
-    /*private Long extractIdFromException(ObjectOptimisticLockingFailureException ex) {
-        // The message contains the entity class and id, e.g. "...Lesson#8"
-        String msg = ex.getMessage();
-        Matcher m = Pattern.compile("#(\\d+)").matcher(msg);
-        return m.find() ? Long.valueOf(m.group(1)) : null;
-    }*/
+    @ExceptionHandler(AuthException.class)
+    public String handleAuthException(AuthException ex,
+                                      RedirectAttributes redirectAttrs) {
+        log.warn("Auth error: {}", ex.getMessage());
+
+        RegistrationDto emptyDto = new RegistrationDto();
+        redirectAttrs.addFlashAttribute("registrationDto", emptyDto);
+        redirectAttrs.addFlashAttribute("globalError", ex.getMessage());
+
+        return "redirect:/auth/register";
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public String handleConstraintViolation(ConstraintViolationException ex,
+                                            RedirectAttributes redirectAttrs) {
+        redirectAttrs.addFlashAttribute("globalError", "Invalid input data.");
+        return "redirect:/auth/register";
+    }
+
+    @ExceptionHandler(UserException.class)
+    public String handleUserException(UserException ex,
+                                        Model model) {
+        String userMessage;
+        if (ex instanceof UserNotFoundException notFound) {
+            userMessage = notFound.getMessage();
+        } else if(ex instanceof EmailNotFoundException){
+            userMessage = ex.getMessage();
+        }else {
+            userMessage = "Erro inesperado " + ex.getMessage();
+        }
+        model.addAttribute("errorMessage", userMessage);
+        return "error-page";
+    }
+
+    @ExceptionHandler(EmailAlreadyUsedException.class)
+    public String handleEmailAlreadyUsedException(EmailAlreadyUsedException ex,
+                                                  Model model) {
+       String userMessage = "Email já cadastrado" + ex.getMessage();
+       model.addAttribute("errorMessage", userMessage);
+       return "redirect:/auth/register";
+    }
+
 }
 
 

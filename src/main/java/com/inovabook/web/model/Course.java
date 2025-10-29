@@ -17,7 +17,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -43,4 +45,7 @@ public class Course {
     private LocalDateTime publishedOn;
     @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE)
     private List<Lesson> lessons = new ArrayList<>();
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Enrollment> enrollments = new HashSet<>();
 }

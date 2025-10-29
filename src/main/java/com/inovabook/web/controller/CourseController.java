@@ -2,9 +2,16 @@ package com.inovabook.web.controller;
 
 import com.inovabook.web.dto.CourseDto;
 import com.inovabook.web.model.Course;
+import com.inovabook.web.model.User;
+import com.inovabook.web.repository.CourseRepository;
+import com.inovabook.web.repository.EnrollmentRepository;
 import com.inovabook.web.service.CourseService;
+import com.inovabook.web.service.EnrollService;
+import com.inovabook.web.service.LessonService;
+import com.inovabook.web.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,12 +21,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.util.List;
 
 @Controller
 public class CourseController {
 
     private CourseService courseService;
+    private UserService userService;
+    private LessonService lessonService;
+    private CourseRepository courseRepository;
+    private EnrollService enrollService;
+    private EnrollmentRepository enrollmentRepository;
 
     @Autowired
     public CourseController(CourseService courseService) {
@@ -70,11 +84,19 @@ public class CourseController {
         return "course-edit";
     }
 
-    @GetMapping("/courses/{id}/")
+    @GetMapping("/courses/{id}")
     public String courseView(@PathVariable("id") Long id,
-                                 Model model){
+                                 Model model,
+                             @AuthenticationPrincipal User user){
+            if (user != null) {
+                return "redirect:/login";
+            }
         CourseDto courseDto = courseService.findById(id);
         model.addAttribute("course", courseDto);
+        model.addAttribute("progress", lessonService.getLessonProgressForCourse(user, id));
+
+        boolean enrolled = enrollmentRepository.existsByUserAndCourse(user, courseRepository.findById(id).orElse(null));
+        model.addAttribute("enrolled", enrolled);
         return "course-view";
     }
 
@@ -98,5 +120,29 @@ public class CourseController {
     public String deleteCourse(@PathVariable("id") Long id){
         courseService.deleteCourse(id);
         return "redirect:/courses";
+    }
+
+    @PostMapping("/enroll/{id}")
+    public String enroll(@PathVariable Long courseId,
+                         RedirectAttributes ra,
+                         @AuthenticationPrincipal User user) {  // Auto-injected!
+            if(user == null){
+                return "redirect:/login";
+            }
+        enrollService.subscribeUserToCourse(user, courseId);
+        ra.addFlashAttribute("message", "Enrolled successfully!");
+        return "redirect:/courses";
+    }
+
+    @PostMapping("/courses/{courseId}/lesson/{lessonId}/seen")
+    public String markLessonSeen(
+            @PathVariable Long courseId,
+            @PathVariable Long lessonId,
+            RedirectAttributes redirectAttrs,
+            @AuthenticationPrincipal User user) {
+
+        lessonService.markLessonAsSeen(user, lessonId);
+        redirectAttrs.addFlashAttribute("message", "Lesson marked as seen!");
+        return "redirect:/courses/" + courseId;
     }
 }
