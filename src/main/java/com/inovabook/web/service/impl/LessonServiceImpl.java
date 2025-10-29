@@ -69,6 +69,7 @@ public class LessonServiceImpl implements LessonService {
 
 
     @Override
+    @Transactional
     public void deleteLesson(Long id) {lessonRepository.deleteById(id);}
 
     @Override

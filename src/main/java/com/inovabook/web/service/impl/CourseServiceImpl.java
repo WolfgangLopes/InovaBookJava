@@ -7,8 +7,10 @@ import com.inovabook.web.repository.CourseRepository;
 import com.inovabook.web.service.CourseService;
 import com.inovabook.web.dto.CourseDto;
 import com.inovabook.web.service.FileStorageService;
-import jakarta.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,11 +19,13 @@ import static com.inovabook.web.mapper.CourseMapper.mapToCourse;
 import static com.inovabook.web.mapper.CourseMapper.mapToCourseDto;
 
 @Service
+@Transactional
 public class CourseServiceImpl implements CourseService {
 
     private final CourseRepository courseRepository;
     private final FileStorageService fileStorageService;
 
+    @Autowired
     public CourseServiceImpl(CourseRepository courseRepository, FileStorageService fileStorageService) {
         this.courseRepository = courseRepository;
         this.fileStorageService = fileStorageService;
