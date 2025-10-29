@@ -56,17 +56,16 @@ public class CourseServiceImpl implements CourseService {
         Course existing = courseRepository.findById(courseDto.getId())
                 .orElseThrow(() -> new CourseNotFoundException(courseDto.getId()));
 
-        // ✅ Map the incoming DTO to a temporary Course object
+        //  Map the incoming DTO to a temporary Course object
         Course updatedData = CourseMapper.mapToCourse(courseDto);
 
-        // ✅ Apply only updatable fields
+        //  Update only safe fields
         existing.setTitle(updatedData.getTitle());
         existing.setDescription(updatedData.getDescription());
         existing.setPrice(updatedData.getPrice());
         existing.setDuration(updatedData.getDuration());
         existing.setPublished(updatedData.isPublished());
 
-            // ✅ Handle file upload
             if (file != null && !file.isEmpty()) {
                 String newFileName = fileStorageService.replaceFile("image/thumbnail", existing.getThumbnailPath(), file);
                 existing.setThumbnailPath(newFileName);

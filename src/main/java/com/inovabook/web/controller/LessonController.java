@@ -1,6 +1,5 @@
 package com.inovabook.web.controller;
 
-import com.inovabook.web.dto.CourseDto;
 import com.inovabook.web.dto.LessonDto;
 import com.inovabook.web.model.Lesson;
 import com.inovabook.web.service.LessonService;

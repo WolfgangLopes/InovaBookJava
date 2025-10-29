@@ -59,8 +59,7 @@ public class FileStorageServiceImpl implements FileStorageService {
             return oldFilename;
         }
         if (oldFilename != null && !oldFilename.isBlank()) {
-            // We deliberately ignore the boolean result; failure to delete is logged
-            // inside deleteFile() and does not abort the whole operation.
+            // log failure and continue operation
             deleteFile(subfolder, oldFilename);
         }
         String filename = storeFile(newFile, subfolder);
