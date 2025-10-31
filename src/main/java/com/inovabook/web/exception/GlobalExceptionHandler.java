@@ -3,7 +3,6 @@ package com.inovabook.web.exception;
 import com.inovabook.web.dto.RegistrationDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.constraints.Email;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.ui.Model;
@@ -56,7 +55,7 @@ public class GlobalExceptionHandler {
                                         Model model) {
         String userMessage;
         if (ex instanceof CourseNotFoundException notFound) {
-            userMessage = notFound.getMessage();
+            userMessage = ex.getMessage();
         } else {
             userMessage = "Erro inesperado " + ex.getMessage();
         }
@@ -69,7 +68,7 @@ public class GlobalExceptionHandler {
                                         Model model) {
         String userMessage;
         if (ex instanceof LessonNotFoundException notFound) {
-            userMessage = notFound.getMessage();
+            userMessage = ex.getMessage();
         } else {
             userMessage = "Erro inesperado " + ex.getMessage();
         }
@@ -102,29 +101,6 @@ public class GlobalExceptionHandler {
                                             RedirectAttributes redirectAttrs) {
         redirectAttrs.addFlashAttribute("globalError", "Invalid input data.");
         return "redirect:/auth/register";
-    }
-
-    @ExceptionHandler(UserException.class)
-    public String handleUserException(UserException ex,
-                                        Model model) {
-        String userMessage;
-        if (ex instanceof UserNotFoundException notFound) {
-            userMessage = notFound.getMessage();
-        } else if(ex instanceof EmailNotFoundException){
-            userMessage = ex.getMessage();
-        }else {
-            userMessage = "Erro inesperado " + ex.getMessage();
-        }
-        model.addAttribute("errorMessage", userMessage);
-        return "error-page";
-    }
-
-    @ExceptionHandler(EmailAlreadyUsedException.class)
-    public String handleEmailAlreadyUsedException(EmailAlreadyUsedException ex,
-                                                  Model model) {
-       String userMessage = "Email já cadastrado" + ex.getMessage();
-       model.addAttribute("errorMessage", userMessage);
-       return "redirect:/auth/register";
     }
 
 }
