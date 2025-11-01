@@ -1,0 +1,119 @@
+/* ====== ESTILO GERAL ====== */
+body {
+  background-color: #f4f4f4;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #222;
+  margin: 0;
+  padding: 0;
+}
+
+/* ====== CONTAINER PRINCIPAL ====== */
+.container {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 40px;
+  max-width: 800px;
+  margin: 40px auto;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* ====== TÍTULO ====== */
+.container h2, .container label {
+  color: #013a76;
+}
+
+/* ====== LABELS E INPUTS ====== */
+form label {
+  font-weight: bold;
+  margin-bottom: 8px;
+  display: block;
+  color: #013a76;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1em;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  outline: none;
+}
+
+/* ====== UPLOAD DE IMAGEM ====== */
+.custom-file {
+  position: relative;
+  margin-top: 20px;
+}
+
+.custom-file-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px dashed #013a76;
+  border-radius: 6px;
+  background-color: #f8f9fa;
+  cursor: pointer;
+}
+
+.custom-file-label {
+  display: block;
+  margin-top: 8px;
+  color: #555;
+}
+
+/* ====== CHECKBOX ====== */
+.form-check {
+  margin-top: 20px;
+}
+
+.form-check-label {
+  color: #013a76;
+  font-weight: 500;
+}
+
+.form-check-input {
+  margin-right: 10px;
+  transform: scale(1.2);
+}
+
+/* ====== BOTÃO ====== */
+.btn-primary {
+  background-color: #013a76;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 25px;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+/* ====== ERROS DE VALIDAÇÃO ====== */
+.text-danger {
+  color: #d9534f;
+  font-size: 0.9em;
+  margin-top: 5px;
+}
+
+/* ====== RESPONSIVIDADE ====== */
+@media (max-width: 768px) {
+  .container {
+    padding: 25px;
+    margin: 20px;
+  }
+
+  .btn-primary {
+    width: 100%;
+  }
+}

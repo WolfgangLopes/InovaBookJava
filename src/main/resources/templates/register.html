@@ -4,21 +4,13 @@
       layout:decorate="~{layout}">
 <head>
     <title>Register</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
 
 <h1>Registrar</h1>
 
 <form th:action="@{/auth/register}" th:object="${registrationDto}" method="post">
-
-    <!-- Username -->
-    <div>
-        <label for="username">Email</label>
-        <input type="text" th:field="*{email}" id="username"/>
-        <div th:if="${#fields.hasErrors('username')}"
-             th:errors="*{email}" class="error"></div>
-    </div>
 
     <!-- Email -->
     <div>
