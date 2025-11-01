@@ -12,14 +12,6 @@
 
 <form th:action="@{/auth/register}" th:object="${registrationDto}" method="post">
 
-    <!-- Username -->
-    <div>
-        <label for="username">Username</label>
-        <input type="text" th:field="*{username}" id="username"/>
-        <div th:if="${#fields.hasErrors('username')}"
-             th:errors="*{username}" class="error"></div>
-    </div>
-
     <!-- Email -->
     <div>
         <label for="email">E‑mail</label>
