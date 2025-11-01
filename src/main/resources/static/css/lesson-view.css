@@ -1,0 +1,54 @@
+/* ======= lesson-view.css ======= */
+
+body {
+    background-color: #f7f8fa;
+    font-family: "Poppins", sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+section {
+    text-align: center;
+    background: #ffffff;
+    padding: 60px 40px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    max-width: 700px;
+    width: 90%;
+}
+
+a {
+    display: inline-block;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #007bff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    word-wrap: break-word;
+}
+
+a:hover {
+    color: #0056b3;
+    transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+    section {
+        padding: 40px 20px;
+    }
+
+    a {
+        font-size: 1.6rem;
+    }
+}
