@@ -4,7 +4,7 @@
       layout:decorate="~{layout}">
 <head>
     <title>Register</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
 </head>
 <body>
 
@@ -14,10 +14,10 @@
 
     <!-- Username -->
     <div>
-        <label for="username">Username</label>
-        <input type="text" th:field="*{username}" id="username"/>
+        <label for="username">Email</label>
+        <input type="text" th:field="*{email}" id="username"/>
         <div th:if="${#fields.hasErrors('username')}"
-             th:errors="*{username}" class="error"></div>
+             th:errors="*{email}" class="error"></div>
     </div>
 
     <!-- Email -->

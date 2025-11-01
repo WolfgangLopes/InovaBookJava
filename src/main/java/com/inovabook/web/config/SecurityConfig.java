@@ -22,7 +22,12 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return email -> userRepository.findByEmail(email)
-                .orElseThrow(() -> new EmailNotFoundException("User not found"));
+                .map(user -> org.springframework.security.core.userdetails.User
+                        .withUsername(user.getEmail())
+                        .password(user.getPassword())
+                        .authorities("ROLE_USER")
+                        .build())
+                .orElseThrow(() -> new EmailNotFoundException("User not found: " + email));
     }
 
     @Bean
@@ -34,14 +39,21 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/css/**").permitAll()
+                        .requestMatchers("/login", "/css/**", "/images/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/courses")
+                        .usernameParameter("email")           // REQUIRED
+                        .passwordParameter("password")        // optional
+                        .defaultSuccessUrl("/courses", true)  // true = always redirect
+                        .permitAll()
                 )
-                .logout(logout -> logout.logoutSuccessUrl("/login"));
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/login?logout")
+                        .permitAll()
+                );
+
         return http.build();
     }
 }
