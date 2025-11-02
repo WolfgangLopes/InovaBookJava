@@ -1,4 +1,3 @@
-/* ====== ESTILO GERAL ====== */
 body {
   background-color: #f4f4f4;
   font-family: "Segoe UI", Arial, sans-serif;
@@ -7,7 +6,7 @@ body {
   padding: 0;
 }
 
-/* ====== CONTAINER ====== */
+
 .container {
   background: #fff;
   border-radius: 10px;
@@ -17,7 +16,7 @@ body {
   max-width: 1200px;
 }
 
-/* ====== TÍTULOS ====== */
+
 h1.fw-bolder {
   color: #013a76;
   font-size: 2.2em;
@@ -29,7 +28,7 @@ p.lead {
   font-size: 1.1em;
 }
 
-/* ====== BARRA DE PESQUISA ====== */
+
 form {
   display: flex;
   justify-content: center;
@@ -52,7 +51,7 @@ form {
   outline: none;
 }
 
-/* ====== GRID DE CURSOS ====== */
+
 .row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -97,7 +96,7 @@ p.stretched-link {
   padding-right: 20px;
 }
 
-/* ====== BOTÃO EDITAR ====== */
+
 .btn-primary {
   display: inline-block;
   background-color: #013a76;
@@ -115,7 +114,7 @@ p.stretched-link {
   background-color: #0056b3;
 }
 
-/* ====== RESPONSIVIDADE ====== */
+
 @media (max-width: 768px) {
   .container {
     padding: 25px;
