@@ -1,4 +1,3 @@
-/* ====== ESTILO GERAL ====== */
 body {
   background-color: #f4f4f4;
   font-family: "Segoe UI", Arial, sans-serif;
@@ -7,7 +6,6 @@ body {
   padding: 0;
 }
 
-/* ====== CONTAINER PRINCIPAL ====== */
 .container {
   background-color: #ffffff;
   border-radius: 10px;
@@ -17,12 +15,12 @@ body {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* ====== TÍTULO ====== */
+
 .container h2, .container label {
   color: #013a76;
 }
 
-/* ====== LABELS E INPUTS ====== */
+
 form label {
   font-weight: bold;
   margin-bottom: 8px;
@@ -45,7 +43,7 @@ form label {
   outline: none;
 }
 
-/* ====== UPLOAD DE IMAGEM ====== */
+
 .custom-file {
   position: relative;
   margin-top: 20px;
@@ -66,7 +64,7 @@ form label {
   color: #555;
 }
 
-/* ====== CHECKBOX ====== */
+
 .form-check {
   margin-top: 20px;
 }
@@ -81,7 +79,7 @@ form label {
   transform: scale(1.2);
 }
 
-/* ====== BOTÃO ====== */
+
 .btn-primary {
   background-color: #013a76;
   color: white;
@@ -99,14 +97,14 @@ form label {
   background-color: #0056b3;
 }
 
-/* ====== ERROS DE VALIDAÇÃO ====== */
+
 .text-danger {
   color: #d9534f;
   font-size: 0.9em;
   margin-top: 5px;
 }
 
-/* ====== RESPONSIVIDADE ====== */
+
 @media (max-width: 768px) {
   .container {
     padding: 25px;
