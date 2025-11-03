@@ -1,15 +1,38 @@
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/"
-      layout:decorate="~{layout}">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title></title>
-    <link th:href="@{/css/lesson-view.css}" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title th:text="${lesson.title}">Lesson</title>
+    <style>
+        video { width: 100%; max-width: 800px; display: block; margin: 20px auto; border: 2px solid #007bff; border-radius: 8px; }
+        .status { font-size: 1.2em; text-align: center; margin: 10px; }
+        .done { color: green; font-weight: bold; }
+    </style>
 </head>
-<body class="d-flex flex-column h-100">
-<main class="flex-shrink-0">
-    <section layout:fragment="content">
-        <a th:text="${lesson.title}"></a>
-    </section>
-</main>
+<body>
+<div class="container">
+    <h2 th:text="${lesson.title}">Java 101</h2>
+
+    <video controls id="vid" width="800">
+        <source th:src="@{/video/lesson/{videoPath}(videoPath=${lesson.videoPath})}" type="video/mp4">
+        Your browser does not support video.
+    </video>
+
+    <p class="status" id="status" th:text="${completed} ? '✅ Lição completa' : '▶️ Click play para começar'">
+        ▶️ Click play para começar
+    </p>
+
+    <script th:inline="javascript">
+        const v = document.getElementById('vid');
+        const s = document.getElementById('status');
+        v.onended = () => {
+            s.textContent = '✅ Lesson completed!';
+            s.classList.add('done');
+            // send to server (view-based)
+            fetch(/*[[ @{ /lesson/complete } ]]*/, {method: 'POST'})
+                .then(() => console.log('Marked as done'));
+        };
+    </script>
+</div>
 </body>
 </html>

@@ -1,53 +1,28 @@
 package com.inovabook.web.model;
 
+import jakarta.persistence.*;
+import lombok.*;
+import java.util.HashSet;
+import java.util.Set;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
+@Entity
+@Table(name = "roles")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity(name = "roles")
+@NoArgsConstructor(force = true)
+@RequiredArgsConstructor
+//@ToString(onlyExplicitlyIncluded = true)
 public class Role {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
-    private String name;
-    @ManyToMany(mappedBy = "roles")
-    private List<User> users = new ArrayList<>();
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Role role)) return false;
-        return Objects.equals(name, role.name);
-    }
+    @Column(nullable = false, unique = true, length = 50)
+    @NonNull
+    @ToString.Include
+    private final String name;
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(name);
-    }
-
-    @Override
-    public String toString() {
-        return "Role{name='" + name + "'}";
-    }
-
-
+    /*@ManyToMany(mappedBy = "roles")
+    @Setter(AccessLevel.PRIVATE)
+    private Set<User> users = new HashSet<>();*/
 }

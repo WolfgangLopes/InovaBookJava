@@ -1,6 +1,5 @@
 package com.inovabook.web.dto;
 
-//import com.inovabook.web.model.User;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
@@ -24,7 +23,6 @@ public class CourseDto {
     @Min(value=1, message="{course.duration.min}")
     private Integer duration;
 
-    //private User instructor;
     private BigDecimal price;
     private boolean published;
     private LocalDateTime publishedOn;

@@ -1,28 +1,11 @@
 <header class="header">
     <div class="logo">
-      <img th:src="@{/image/thumbnail/Logo-Pequeno.png}" alt="Logo">
+      <img th:src="@{/image/inovaBook-logo-small.png}" alt="Logo">
       <h1>InovaBook</h1>
     </div>
     <nav class="nav">
       <a th:href="@{/courses}">Cursos</a>
-      <a th:href="@{/partners}">Se torne parceiro</a>
-      <a th:href="@{/faq}">FAQ</a>
-      <button class="login">Log in</button>
-      <button class="register">Registre-se</button>
+      <button class="login" th:ref="@{/login}">Log in</button>
+      <button class="register" th:ref="@{/register}">Registre-se</button>
     </nav>
   </header>
-
-  
-  <section class="hero">
-    <div class="hero-text">
-      <h2>Baixe na Playstore</h2>
-      <p>Aqui , já terá uma grande exploração do aprendizado e ao recompensador destino escolar</p>
-      <div class="buttons">
-        <button class="btn ios">Download for iOS</button>
-        <button class="btn android">Download for Android</button>
-      </div>
-    </div>
-    <div class="hero-img">
-      <img th:src="@{/image/thumbnail/Logo-InovaBook.png}" alt="Livro Logo">
-    </div>
-  </section>

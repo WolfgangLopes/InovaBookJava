@@ -11,40 +11,39 @@ import com.inovabook.web.repository.RoleRepository;
 import com.inovabook.web.repository.UserRepository;
 import com.inovabook.web.service.UserService;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.util.Arrays;
+
+import java.util.Collections;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor   // ← auto-injects all final fields
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    //private final PasswordEncoder passwordEncoder;
-
-    public UserServiceImpl(RoleRepository roleRepository, UserRepository userRepository) {
-        this.roleRepository = roleRepository;
-        this.userRepository = userRepository;
-        //this.passwordEncoder = passwordEncoder;
-    }
+    private final PasswordEncoder passwordEncoder;   // ← NOW INJECTED!
 
     @Transactional
     @Override
-    public void save(RegistrationDto registrationDto) {
-        if (userRepository.existsByEmail(registrationDto.getEmail())) {
-            throw new EmailAlreadyUsedException(registrationDto.getEmail());
+    public void save(RegistrationDto dto) {
+        if (userRepository.existsByEmail(dto.getEmail())) {
+            throw new EmailAlreadyUsedException(dto.getEmail());
         }
 
-        // 2️⃣ (optional) check for duplicate username
-        if (userRepository.existsByEmail(registrationDto.getEmail())) {
-            throw new EmailAlreadyUsedException(registrationDto.getEmail());
-        }
-        User user = new User();
-        user.setUsername(registrationDto.getEmail());
-        user.setEmail(registrationDto.getEmail());
-        user.setPassword(registrationDto.getPassword());
-        Role role = roleRepository.findByName("USER");
-        user.setRoles(Arrays.asList(role));
+        Role userRole = roleRepository.findByName("USER")
+                .orElseThrow(() -> new IllegalStateException(
+                        "CRITICAL: Role 'USER' missing! Run: INSERT INTO roles (name) VALUES ('USER');"
+                ));
+
+        User user = User.builder()
+                .email(dto.getEmail())
+                .password(passwordEncoder.encode(dto.getPassword()))
+                .roles(Collections.singleton(userRole))
+                .build();
+
         userRepository.save(user);
     }
 

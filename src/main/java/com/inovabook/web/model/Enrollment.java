@@ -1,7 +1,5 @@
 package com.inovabook.web.model;
 
-import com.inovabook.web.model.Course;
-import com.inovabook.web.model.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -31,9 +29,8 @@ public class Enrollment {
     private Course course;
 
     @Column(name = "enrolled_at", nullable = false)
-    private LocalDateTime enrolledAt = LocalDateTime.now();
+    private final LocalDateTime enrolledAt = LocalDateTime.now();
 
-    // constructors, getters, setters
     public Enrollment() {}
     public Enrollment(User user, Course course) {
         this.user = user;

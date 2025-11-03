@@ -93,14 +93,14 @@ public class GlobalExceptionHandler {
         redirectAttrs.addFlashAttribute("registrationDto", emptyDto);
         redirectAttrs.addFlashAttribute("globalError", ex.getMessage());
 
-        return "redirect:/auth/register";
+        return "redirect:/register";
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public String handleConstraintViolation(ConstraintViolationException ex,
                                             RedirectAttributes redirectAttrs) {
         redirectAttrs.addFlashAttribute("globalError", "Invalid input data.");
-        return "redirect:/auth/register";
+        return "redirect:/register";
     }
 
 }

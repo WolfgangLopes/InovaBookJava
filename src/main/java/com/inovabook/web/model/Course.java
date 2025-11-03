@@ -43,9 +43,12 @@ public class Course {
     private String thumbnailPath;
     private boolean published;
     private LocalDateTime publishedOn;
+
+    @Builder.Default
     @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE)
     private List<Lesson> lessons = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Enrollment> enrollments = new HashSet<>();
 }

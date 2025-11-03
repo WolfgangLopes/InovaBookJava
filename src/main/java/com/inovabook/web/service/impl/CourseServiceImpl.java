@@ -5,7 +5,6 @@ import com.inovabook.web.mapper.CourseMapper;
 import com.inovabook.web.model.Course;
 import com.inovabook.web.repository.CourseRepository;
 import com.inovabook.web.repository.EnrollmentRepository;
-import com.inovabook.web.repository.LessonProgressRepository;
 import com.inovabook.web.repository.LessonRepository;
 import com.inovabook.web.service.CourseService;
 import com.inovabook.web.dto.CourseDto;
@@ -27,13 +26,11 @@ public class CourseServiceImpl implements CourseService {
 
     private final CourseRepository courseRepository;
     private final FileStorageService fileStorageService;
-    private final LessonProgressRepository lessonProgressRepository;
 
     @Autowired
-    public CourseServiceImpl(CourseRepository courseRepository, FileStorageService fileStorageService, EnrollmentRepository enrollmentRepository, LessonProgressRepository lessonProgressRepository, EntityManager entityManager, LessonRepository lessonRepository) {
+    public CourseServiceImpl(CourseRepository courseRepository, FileStorageService fileStorageService, EnrollmentRepository enrollmentRepository, EntityManager entityManager, LessonRepository lessonRepository) {
         this.courseRepository = courseRepository;
         this.fileStorageService = fileStorageService;
-        this.lessonProgressRepository = lessonProgressRepository;
     }
 
     @Override

@@ -34,7 +34,7 @@ public class CourseMapper {
                 .published(course.isPublished())
                 .publishedOn(course.getPublishedOn())
                 .duration(course.getDuration())
-                .lessons(course.getLessons().stream().map((lesson)-> mapToLessonDto(lesson)).collect(Collectors.toList()))
+                .lessons(course.getLessons().stream().map(LessonMapper::mapToLessonDto).collect(Collectors.toList()))
                 .build();
     }
 }

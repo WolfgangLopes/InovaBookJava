@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Principal;
+
 @Controller
 public class LessonController {
 
@@ -47,7 +49,7 @@ public class LessonController {
        }
         lessonService.createLesson(id, lessonDto, file);
         model.addAttribute("message", "Lição salva com sucesso!");
-        return "redirect:/courses/" + id+"/";
+        return "redirect:/courses/%d/".formatted(id);
     }
 
     @GetMapping("/lesson/{id}")
@@ -79,13 +81,20 @@ public class LessonController {
         }
         lesson.setId(id);
         lessonService.updateLesson(lesson, file);
-        return "redirect:lesson" + id +"/";
+        return "redirect:lesson/%d/".formatted(id);
     }
 
     @DeleteMapping("/lesson/{id}/delete")
     public String deleteLesson(@PathVariable("id") long id){
         lessonService.deleteLesson(id);
-        return "redirect:/courses/" + id +"/";
+        return "redirect:/courses/%d/".formatted(id);
+    }
+
+    @PostMapping("/lesson/complete")
+    public String completeLesson(Principal user, Model model) {
+        System.out.println(user.getName() + " finished the lesson!");
+        model.addAttribute("completed", true);
+        return "forward:/lesson";
     }
 }
 

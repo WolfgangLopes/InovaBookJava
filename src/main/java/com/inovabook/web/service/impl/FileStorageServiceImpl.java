@@ -62,8 +62,7 @@ public class FileStorageServiceImpl implements FileStorageService {
             // log failure and continue operation
             deleteFile(subfolder, oldFilename);
         }
-        String filename = storeFile(newFile, subfolder);
-        return filename;
+        return storeFile(newFile, subfolder);
     }
 
 

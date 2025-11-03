@@ -5,6 +5,7 @@ import com.inovabook.web.model.Course;
 import com.inovabook.web.model.User;
 import com.inovabook.web.repository.CourseRepository;
 import com.inovabook.web.repository.EnrollmentRepository;
+import com.inovabook.web.repository.UserRepository;
 import com.inovabook.web.service.CourseService;
 import com.inovabook.web.service.EnrollService;
 import com.inovabook.web.service.LessonService;
@@ -28,16 +29,36 @@ import java.util.List;
 @Controller
 public class CourseController {
 
-    private CourseService courseService;
-    private UserService userService;
-    private LessonService lessonService;
-    private CourseRepository courseRepository;
-    private EnrollService enrollService;
-    private EnrollmentRepository enrollmentRepository;
+    private final CourseService courseService;
+    private final LessonService lessonService;
+    private final CourseRepository courseRepository;
+    private final EnrollService enrollService;
+    private final EnrollmentRepository enrollmentRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public CourseController(CourseService courseService) {
+    public CourseController(
+            CourseService courseService,
+            LessonService lessonService,
+            CourseRepository courseRepository,
+            EnrollService enrollService,
+            EnrollmentRepository enrollmentRepository,
+            UserRepository userRepository
+    ) {
         this.courseService = courseService;
+        this.lessonService = lessonService;
+        this.courseRepository = courseRepository;
+        this.enrollService = enrollService;
+        this.enrollmentRepository = enrollmentRepository;
+        this.userRepository = userRepository;
+    }
+
+
+    @GetMapping("/")
+    public String listCoursesHome(Model model){
+        List<CourseDto> courses = courseService.getAllCourses();
+        model.addAttribute("courses", courses);
+        return "course-list";
     }
 
     @GetMapping("/courses")
@@ -85,17 +106,16 @@ public class CourseController {
     }
 
     @GetMapping("/courses/{id}")
-    public String courseView(@PathVariable("id") Long id,
-                                 Model model,
-                             @AuthenticationPrincipal User user){
-            if (user != null) {
-                return "redirect:/login";
-            }
-        CourseDto courseDto = courseService.findById(id);
-        model.addAttribute("course", courseDto);
-        model.addAttribute("progress", lessonService.getLessonProgressForCourse(user, id));
+    public String courseView(
+            @PathVariable Long id,
+            Model model,
+            @AuthenticationPrincipal User user) {
+        CourseDto course = courseService.findById(id);
+        model.addAttribute("course", course);
 
-        boolean enrolled = enrollmentRepository.existsByUserAndCourse(user, courseRepository.findById(id).orElse(null));
+        boolean enrolled = enrollmentRepository.existsByUserAndCourse(
+                user, courseRepository.findById(id).orElse(null)
+        );
         model.addAttribute("enrolled", enrolled);
         return "course-view";
     }
@@ -123,13 +143,10 @@ public class CourseController {
     }
 
     @PostMapping("/enroll/{id}")
-    public String enroll(@PathVariable Long courseId,
+    public String enroll(@PathVariable Long id,
                          RedirectAttributes ra,
-                         @AuthenticationPrincipal User user) {  // Auto-injected!
-            if(user == null){
-                return "redirect:/login";
-            }
-        enrollService.subscribeUserToCourse(user, courseId);
+                         @AuthenticationPrincipal User user) {
+        enrollService.subscribeUserToCourse(user, id);
         ra.addFlashAttribute("message", "Enrolled successfully!");
         return "redirect:/courses";
     }
@@ -140,8 +157,6 @@ public class CourseController {
             @PathVariable Long lessonId,
             RedirectAttributes redirectAttrs,
             @AuthenticationPrincipal User user) {
-
-        lessonService.markLessonAsSeen(user, lessonId);
         redirectAttrs.addFlashAttribute("message", "Lesson marked as seen!");
         return "redirect:/courses/" + courseId;
     }

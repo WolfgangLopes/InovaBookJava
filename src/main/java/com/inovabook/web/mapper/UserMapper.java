@@ -16,7 +16,6 @@ public class UserMapper {
     return new UserDto(
             user.getId(),
             user.getEmail(),
-            displayName,
             user.getCreatedOn(),
             roleNames
     );

@@ -1,5 +1,6 @@
 <html xmlns:th="http://www.thymeleaf.org"
 xmlns:layout="http://www.ultraq.net.nz/thymeleaf/"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
 layout:decorate="~{layout}">
 <head>
     <title>Cursos</title>
@@ -21,7 +22,7 @@ layout:decorate="~{layout}">
                    </form>
                </div>
                 <div th:each="course : ${courses}" class="col-lg-6 mb-2">
-               <a class="position-relative mb-3 d-block text-decoration-none link-dark" th:href="@{/courses/{id}/(id=${course.id})}">
+               <a class="position-relative mb-3 d-block text-decoration-none link-dark" th:href="@{/courses/{id}(id=${course.id})}">
                         <img class="img-fluid rounded-3 mb-3" th:src="@{/image/thumbnail/{file}(file=${course.thumbnailPath})}" alt="Thumbnail" />
                         <h3 class="d-flex justify-content-lg-start align-items-center mb-2">
                             <span th:text="${course.title}" class="h4 fw-bolder mb-0"></span>
@@ -30,7 +31,7 @@ layout:decorate="~{layout}">
                         </h3>
                         <p th:text="${course.description}" class="stretched-link"></p>
                </a>
-                    <a class="btn btn-primary" th:href="@{/courses/{id}/edit(id=${course.id})}">Edit</a>
+                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-primary" th:href="@{/courses/{id}/edit(id=${course.id})}">Edit</a>
                 </div>
             </div>
         </div>

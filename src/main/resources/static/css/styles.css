@@ -1,172 +1,138 @@
+/* --------------------------------------------------------------
+   0️⃣ Global reset & basic page sizing
+   -------------------------------------------------------------- */
 @charset "UTF-8";
 
-/* ====== RESET BÁSICO ====== */
 * {
-  margin: 0px;
-  padding: 0px;
-  box-sizing: border-box;
-  font-family: "Segoe UI", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
 }
 
+/* Force the viewport to be 100 % high so flex can work */
+html,
 body {
-  background-color: #f4f4f4;
-  color: #222;
+    height: 100%;
+    background-color: #f4f4f4;
+    color: #222;
 }
 
-/* ====== HEADER ====== */
+/* --------------------------------------------------------------
+   1️⃣ Flex wrapper that makes the footer sticky
+   -------------------------------------------------------------- */
+.page-wrapper {
+    display: flex;
+    flex-direction: column;   /* stack header → main → footer */
+    min-height: 100%;         /* fill the whole viewport */
+}
+
+/* The element that actually grows */
+.content {
+    flex: 1 0 auto;           /* take all remaining vertical space */
+}
+
+/* --------------------------------------------------------------
+   2️⃣ Existing component styles (unchanged, only reordered)
+   -------------------------------------------------------------- */
+
+/* ----- HEADER ----- */
 .header {
-  background-color: #013a76;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 50px;
-  flex-wrap: wrap;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.logo h1 {
-  font-size: 20px;
-}
-
-.nav {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.nav a {
-  color: white;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.nav .login, .nav .register {
-  border: none;
-  padding: 8px 15px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.nav .login {
-  background: white;
-  color: #013a76;
-}
-
-.nav .register {
-  background: #007bff;
-  color: white;
-}
-
-
-.hero {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 60px 50px;
-  background-color: #013a76;
-  color: white;
-  flex-wrap: wrap;
-}
-
-.hero-text {
-  max-width: 450px;
-}
-
-.hero-text h2 {
-  font-size: 2.3em;
-  margin-bottom: 15px;
-}
-
-.hero-text p {
-  font-size: 1em;
-  margin-bottom: 20px;
-}
-
-.hero .buttons {
-  display: flex;
-  gap: 10px;
-}
-
-.btn {
-  border: none;
-  border-radius: 6px;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-.btn.ios {
-  background-color: white;
-  color: #013a76;
-}
-
-.btn.android {
-  background-color: white;
-  color: #013a76;
-}
-
-.hero-img img {
-  width: 250px;
-}
-
-/* ====== FOOTER ====== */
-.footer {
-  background-color: #013a76;
-  color: white;
-  padding: 20px 50px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.footer-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.footer-right {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  width: 100%;
-  max-width: 600px;
-}
-
-.footer-info {
-  font-size: 0.9em;
-}
-
-.footer-right a {
-  color: white;
-  text-decoration: underline;
-}
-
-.footer-right img {
-  width: 90px;
-}
-
-@media (max-width: 768px) {
-  .hero {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .hero-img img {
-    margin-top: 30px;
-  }
-
-  .nav {
+    background-color: #013a76;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
     flex-wrap: wrap;
-    justify-content: center;
-  }
+}
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo h1 { font-size: 20px; }
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+}
+.nav .login,
+.nav .register {
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.nav .login { background: white; color: #013a76; }
+.nav .register { background: #007bff; color: white; }
+
+/* ----- HERO ----- */
+.hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 60px 50px;
+    background-color: #013a76;
+    color: white;
+    flex-wrap: wrap;
+}
+.hero-text { max-width: 450px; }
+.hero-text h2 { font-size: 2.3em; margin-bottom: 15px; }
+.hero-text p { font-size: 1em; margin-bottom: 20px; }
+.hero .buttons { display: flex; gap: 10px; }
+.btn {
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: 600;
+}
+.btn.ios,
+.btn.android {
+    background-color: white;
+    color: #013a76;
+}
+.hero-img img { width: 250px; }
+
+/* ----- FOOTER ----- */
+.footer {
+    background-color: #013a76;
+    color: white;
+    padding: 20px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.footer-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.footer-right {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    width: 100%;
+    max-width: 600px;
+}
+.footer-info { font-size: 0.9em; }
+.footer-right a { color: white; text-decoration: underline; }
+.footer-right img { width: 90px; }
+
+/* ----- RESPONSIVE BREAKPOINT ----- */
+@media (max-width: 768px) {
+    .hero {
+        flex-direction: column;
+        text-align: center;
+    }
+    .hero-img img { margin-top: 30px; }
+    .nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
 }

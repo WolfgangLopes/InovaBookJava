@@ -1,15 +1,76 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/"
+      layout:decorate="~{layout}">
 <head>
-    <title>Login</title>
-    <meta charset="UTF-8">
+    <title></title>
 </head>
-<body>
-<h1>Login</h1>
-<form th:action="@{/login}" method="post">
-    <input type="email" name="email" placeholder="Email" required />
-    <input type="password" name="password" placeholder="Password" required />
-    <button type="submit">Login</button>
-</form>
+<body class="d-flex flex-column h-100">
+<main class="flex-shrink-0">
+    <section layout:fragment="content">
+        <style>
+            .main {
+                padding: 0px 10px;
+            }
+
+            @media screen and (max-width: 450px) {
+                .login-form{
+                    margin-top: 10%;
+                }
+                .register-form{
+                    margin-top: 10%;
+                }
+            }
+            @media screen and (min-width: 768px){
+                .main{
+                    margin-left: 30%;
+                }
+
+                .sidenav{
+                    width: 40%;
+                    position: fixed;
+                    z-index: 1;
+                    top: 0;
+                    left: 0;
+                }
+            }
+        </style>
+        <div class="main">
+            <div class="col-md-6 col-sm-12">
+                <div th:if="${param.error}" class="alert alert-danger">
+                    Email ou senha inválidos.
+                </div>
+                <div th:if="${param.logout}" class="alert alert-success">
+                    Você deslogou.</div>
+                <div class="login-form">
+                    <form method="post" th:action="@{/login}">
+
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input
+                                    id="email"
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="Email"
+                                    name="email"
+                                    required>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input
+                                    id="password"
+                                    type="password"
+                                    class="form-control"
+                                    placeholder="Senha"
+                                    name="password"
+                                    required>
+                        </div>
+                        <a th:href="@{/register}" type="submit" class="btn btn-blue">Não possui uma conta? Registrar.</a>
+                        <button type="submit" value="login" class="btn btn-secondary">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
 </body>
 </html>
